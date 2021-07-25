@@ -1,0 +1,23 @@
+.bag {
+  height: 2rem;
+  margin-right: 1rem;
+  width: 2rem;
+}
+
+.title {
+  color: #444444;
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: cyan;
+}
+
+.cartNumber {
+  color: cyan;
+  font-size: 1.5rem;
+  margin-right: 4.5rem;
+}
+
