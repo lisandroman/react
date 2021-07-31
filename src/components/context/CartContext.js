@@ -1,10 +1,12 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 export const CartContext = createContext({})
 export const useCartContext = () => useContext(CartContext)
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
+  const [productsInCart, setProductsInCart] = useState(0)
+  const [providerLoading, setProviderLoading] = useState(true)
   
   const clearCart = () => setCart([]);
   const isInCart = (selectedToy) => cart.filter((item) => item.id === selectedToy.id).length === 0;
@@ -39,7 +41,33 @@ export const CartProvider = ({ children }) => {
    return cart.reduce((acc, item) => acc + item.quantity, 0)
   }
 
-  return  <CartContext.Provider value={{ cartLength, cart, setCart, clearCart, removeFromCart, addToCart, isInCart }}>
+  // Chequeo el stock para limitar agregar al carrito cuando ya no hay stock disponible
+  const checkStock = selectedItem => {
+    const checkItem = cart.find(e => e.id === selectedItem.id);
+    return checkItem ? selectedItem.stock - checkItem.quantity : selectedItem.stock
+  }
+
+  // Agrega el carrito al localStorage
+  useEffect(() => {
+    const localCart = localStorage.getItem("cart")                     
+    if (!localCart) localStorage.setItem("cart", JSON.stringify([]))  
+    else setCart(JSON.parse(localCart))                              
+    setProviderLoading(false)                                       
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart))  
+    const contentInCart = cart.reduce((acc, item) => {        
+      return acc + item.quantity
+    }, 0)
+    setProductsInCart(contentInCart)
+  }, [cart])                                          
+
+
+  const removeItemFromCart = id => setCart(cart.filter(item=>item.id !==id))
+
+
+  return  <CartContext.Provider value={{ removeItemFromCart, providerLoading, productsInCart, checkStock, cartLength, cart, setCart, clearCart, removeFromCart, addToCart, isInCart }}>
             {children}
           </CartContext.Provider>
 }

@@ -20,9 +20,9 @@ export const ItemCount = ({ initial, counter, setCounter, stock }) => {
           Soy un H1 Styledeado
         </ProbandoStyled> */}
         <div className="buttonGroup">
-          <button className="btn btn-danger btn-circle functionButton" onClick={ handleDecrement } disabled={ counter === initial }> - </button>
+          <button className="btn btn-dark btn-circle functionButton" onClick={ handleDecrement } disabled={ counter === initial }> - </button>
           <h3 className="counter"> { counter } </h3>
-          <button className="btn btn-danger btn-circle functionButton" onClick={ handleIncrement } disabled={ counter === stock }> + </button>
+          <button className="btn btn-dark btn-circle functionButton" onClick={ handleIncrement } disabled={ counter === stock }> + </button>
         </div>
       </div>
       {/* { priceCounter() && <h5 className="mt-3"> Subtotal: ${ total } </h5> }

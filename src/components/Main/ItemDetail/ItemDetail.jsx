@@ -5,13 +5,14 @@ import { Loader } from '../../Loader/Loader';
 import { ItemCount } from '../ItemCount/ItemCount';
 
 export const ItemDetail = ({ selectedItem, loader }) => {
+  const { cart, addToCart, removeFromCart, checkStock } = useCartContext();
 
   const [counter, setCounter] = useState(1);
   const [added, setAdded] = useState(false);
   // console.log(cart)
-  
-  const { cart, addToCart, removeFromCart } = useCartContext();
 
+  const stock = checkStock(selectedItem)
+  
   const handleAdd = () => setAdded(!added);
   const handleToCart = () => { addToCart({ ...selectedItem, quantity: counter }) }
   const handleRemoveFromCart = () => { removeFromCart(selectedItem) }
@@ -49,22 +50,33 @@ export const ItemDetail = ({ selectedItem, loader }) => {
             <div className="col-4">
               <h3>{ selectedItem.title }</h3>
               <p> { selectedItem.description }</p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item"> <b> Precio:</b> ${ selectedItem.price } </li>
-                <li className="list-group-item"> <b> Stock: </b> { selectedItem.stock } </li>
-              </ul>
-              {!added  
-                ? ( <>  <ItemCount initial={1} stock={selectedItem.stock} counter={ counter } setCounter={ setCounter }/>
-                        <button className="btn btn-danger mt-2" onClick={ handleButtonAddtoCart }> Agregar al Carrito </button>
-                    </>) 
-                : ( <>  <Link to='/cart' onClick={handleAdd}> 
-                          <button className="btn btn-sm btn-danger" onClick={handleAdd}> Terminar Compra </button>
-                        </Link>
-                        <button className="btn btn-sm btn-info ml-2" onClick={ handleModifyCounter }> Modificar </button>
-                    </>)
-              }
-            <hr />
-            
+
+            {stock > 0 
+              ? <>  <ul className="list-group list-group-flush">
+                      <li className="list-group-item"> <b> Precio:</b> ${ selectedItem.price } </li>
+                      <li className="list-group-item"> <b> Stock: </b> { stock } </li>
+                    </ul>
+                  {!added  
+                    ? ( <>  <ItemCount initial={1} stock={selectedItem.stock} counter={ counter } setCounter={ setCounter }/>
+                            <button className="btn btn-danger mt-2" onClick={ handleButtonAddtoCart }> Agregar al Carrito </button>
+                        </>) 
+                    : ( <>  <Link to='/cart' onClick={handleAdd}> 
+                              <button className="btn btn-sm btn-danger" onClick={ handleAdd }> Terminar Compra </button>
+                            </Link>
+                            <button className="btn btn-sm btn-info ml-2" onClick={ handleModifyCounter }> Modificar </button>
+                        </>)
+                  }
+                  <hr />
+                </>
+              : <>
+                  <div className="alert alert-info" role="alert">
+                    Sin Stock!
+                  </div>
+                  <Link to='/'><button className="btn btn-sm btn-danger ml-2"> Ir a Home </button></Link>
+                  <Link to='/cart'><button className="btn btn-sm btn-danger ml-2"> Ir al Carrito </button></Link>
+                </>
+            }
+
             </div>
           </div>
         </div>

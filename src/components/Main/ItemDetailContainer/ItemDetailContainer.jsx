@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { database } from '../../../firebase/firebase';
 import { Loader } from '../../Loader/Loader';
 import { ItemDetail } from '../ItemDetail/ItemDetail';
 
@@ -11,19 +11,20 @@ export const ItemDetailContainer = () => {
 
   useEffect(() => {
     (async() => {
-      const {data} = await axios.get("https://60efa6a2f587af00179d3a86.mockapi.io/api/v1/items/")
-      const foundItem = data.find(item => item.id === +id);
-      setSelectedItem(foundItem);
-      setPromiseStatus(false);
+      const resolve = await database.doc(id).get();
+      setSelectedItem({ id: resolve.id, ...resolve.data()})
     })()
   }, [id]);
 
-  if (promiseStatus || !selectedItem) return <Loader /> 
-  console.log(selectedItem)
+  console.log(setPromiseStatus)
 
-  return (
-  <div>
-    <ItemDetail loader={ promiseStatus } selectedItem={ selectedItem }/>
-  </div>
+  if (selectedItem.length < 1) {
+    return <Loader />
+  } else {
+    return (
+    <div>
+      <ItemDetail loader={ promiseStatus } selectedItem={ selectedItem }/>
+    </div>
   )
+  }
 }

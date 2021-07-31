@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { database } from '../../../firebase/firebase';
+import { Loader } from '../../Loader/Loader';
 import { ItemList } from '../ItemList/ItemList';
 
 export const ItemListContainer = () => {
@@ -9,17 +10,22 @@ export const ItemListContainer = () => {
   const [toys, setToys] = useState([]);
 
   useEffect(() => {
-   (async () => {
-     const {data} = await axios.get("https://60efa6a2f587af00179d3a86.mockapi.io/api/v1/items/", {timeout: 2000})
-     if (!categoryName) return setToys(data);
-     const catItems = data.filter(item => item.category === categoryName);
-     setToys(catItems)
-   })();
-  }, [categoryName])
-
+    (async () => {
+      let categoryItems = database
+      if (categoryName)
+        categoryItems = database.where("category", "==", categoryName)
+        const response = await categoryItems.get();
+        setToys( response.docs.map((item) => ({id: item.id, ...item.data()})) );
+    })()
+  },[categoryName])
+    
+  if (toys.length < 1) {
+    return <Loader />
+  } else {
   return (
     <div>
       <ItemList toys={ toys }/>
     </div>
   )
+  }
 }
