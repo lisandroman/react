@@ -42,11 +42,12 @@ export const Checkout = ({ sendOrder }) => {
   //Defino el estado para los datos del cliente
   const [buyer, setBuyer] = useState({
     name: '',
+    phone:'',
     email: '',
   });
 
   // Hago un destructuring para acceder directo a cada propiedad
-  const { name, email } = buyer;
+  const { name, phone, email } = buyer;
 
   useEffect( () => {})
 
@@ -62,7 +63,7 @@ export const Checkout = ({ sendOrder }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     sendOrder({ buyer, cartData, orderDate, totalCart });
-    setBuyer({ name, email });
+    setBuyer({ name, phone, email });
     updateStock();
     clearCart();
   };
@@ -80,8 +81,23 @@ export const Checkout = ({ sendOrder }) => {
             autoComplete="off"
             value={ name }
             onChange={ handleInputChange }
+            required
           />
         </div>
+
+        <div className="form-group">
+          <input    
+            type="text"
+            name="phone"
+            className="form-control"
+            placeholder="Teléfono..."
+            autoComplete="off"
+            value={ phone }
+            onChange={ handleInputChange }
+            required
+          />
+        </div>
+        
         <div className="form-group">
           <input
             type="text"
@@ -91,8 +107,10 @@ export const Checkout = ({ sendOrder }) => {
             autoComplete="off"
             value={ email }
             onChange={ handleInputChange }
+            required
           />
         </div>
+
         <div className="form-group">
         <label>Fecha:</label>
           <input
@@ -101,6 +119,7 @@ export const Checkout = ({ sendOrder }) => {
             disabled
           />
         </div>
+
         <div className="form-group">
           <label>Precio: $ </label>
           <input
@@ -109,6 +128,7 @@ export const Checkout = ({ sendOrder }) => {
             disabled
           />
         </div>
+
       <button className="btn btn-primary" type="submit">
         COMPRAR
       </button>
