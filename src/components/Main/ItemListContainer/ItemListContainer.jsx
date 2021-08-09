@@ -15,9 +15,9 @@ export const ItemListContainer = () => {
       if (categoryName)
         categoryItems = database.where("category", "==", categoryName)
         const response = await categoryItems.get();
-        setToys( response.docs.map((item) => ({id: item.id, ...item.data()})) );
+        setToys( response.docs.map((item) => ({ id: item.id, ...item.data() })) );
     })()
-  },[categoryName])
+  },[categoryName]);
     
   if (toys.length < 1) {
     return <Loader />

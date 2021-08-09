@@ -1,28 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import cartLogo from '../../assets/bag.png'
 import { useCartContext } from '../context/CartContext';
 
 export const CartWidget = () => {
-  const { cart } = useCartContext();
-  const cartLength = cart.reduce((acc, item) => { return acc + item.quantity}, 0 )
-  console.log('Carrito en CartWidget:',cart)
-  console.log('Cant de Articulos en carrito:',cartLength)
-  /// Revisar {cart} en caso que no llegue la info
+  const { cart, cartLength } = useCartContext();
 
   return (
     <>
-      {cartLength !== 0 &&
-        <div>
-          <img src={ cartLogo } className="bag" alt="Shopping Bag"/>
-          <span className="cartNumber">{'' + cartLength }</span>
-        </div>
-      }
+      <Link to='/cart'>
+        <img src={ cartLogo } className="bag" alt="Shopping Bag"/>
+        {cart.length !== 0 && <span className="cartNumber"> { cartLength } </span> }
+      </Link>
     </>
   )
 }
 
 
-  
 
 
     

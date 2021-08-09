@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+
 const firebaseConfig = {
   //OBJETO DE FIREBASE
   aapiKey: "AIzaSyDaQYydmiZhDh7x0TG9d6MooAUlNSsTW9Q",
@@ -14,4 +15,5 @@ const app = !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig)
   : firebase.app();
 
-export const database = firebase.firestore(app).collection("toys");
+  export const database = firebase.firestore(app).collection("toys");
+  export const dbOrders = firebase.firestore(app).collection("orders");
