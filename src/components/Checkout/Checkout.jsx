@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { database } from '../../firebase/firebase';
 import { CartContext } from '../context/CartContext';
+import { FormContainer, StyledCheckout, WrapperInput } from './CheckoutStyles';
 
 export const Checkout = ({ sendOrder }) => {
 
-  //Accedo al cartContext y los datos de compra
+  //Traigo el cartContext con los datos del pedido
   const cartContent = useContext(CartContext).cart;
   const { clearCart } = useContext(CartContext);
 
-  //Detalle de compra
+  //Detalle de items agregados
   const cartData = cartContent.map((item) => ({
     title: `${item.title}`,
     id: `${item.id}`,
@@ -16,20 +17,20 @@ export const Checkout = ({ sendOrder }) => {
     quantity: `${item.quantity}`,
   }));
 
-  //Precio final en el carrito
+  //Total del carrito
   const totalCart = cartContent
     .reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0)
     .toLocaleString("es");
 
-  //Funcion con Fecha del pedido 
+  //Obtengo la fecha del pedido
   const getOrderDate = () => {
     let newDate = new Date();
     return newDate.toLocaleDateString("es");
   };
-  const orderDate = getOrderDate(); 
-
+  const orderDate = getOrderDate();
+  
   //Actualizacion de Stock en Firebase
   const updateStock = () => {
     cartContent.forEach((item) => {
@@ -39,19 +40,19 @@ export const Checkout = ({ sendOrder }) => {
     });
   };
 
-  //Defino el estado para los datos del cliente
+  // Declaro las variables para la info del cliente
   const [buyer, setBuyer] = useState({
     name: '',
-    phone:'',
+    contact: '',
     email: '',
   });
 
   // Hago un destructuring para acceder directo a cada propiedad
-  const { name, phone, email } = buyer;
+  const {name, contact, email} = buyer;
 
   useEffect( () => {})
 
-  // onChange para el form en cada input
+  // "Escucho" el valor ingresado y lo asigno a setBuyer declarado arriba 
   const handleInputChange = ({ target }) => {
     setBuyer({ 
       ...buyer,
@@ -59,80 +60,84 @@ export const Checkout = ({ sendOrder }) => {
     });
   };
 
-  // onSubmit para el Form. Hago el submit pasandole la info solicitada. Actualizo stock y limpio el carrito cumpliendo las rúbricas
+  // Hago el submit con los valores que posteriormente se cargan en firebase
   const handleSubmit = (e) => {
     e.preventDefault();
     sendOrder({ buyer, cartData, orderDate, totalCart });
-    setBuyer({ name, phone, email });
+    setBuyer({ name, email, contact });
     updateStock();
     clearCart();
   };
-
+  
   return (
-    <div className="form-group container mt-4 col-4" >
-      <h4>Datos para la compra:</h4>
-      <form onSubmit={ handleSubmit }>
-        <div className="form-group">
-          <input    
-            type="text"
-            name="name"
-            className="form-control"
-            placeholder="Nombre..."
-            autoComplete="off"
-            value={ name }
-            onChange={ handleInputChange }
-            required
-          />
-        </div>
+    <StyledCheckout>
+      <FormContainer>
+        <h4>Ingresa tus datos:</h4>
+        <form onSubmit={ handleSubmit }>
+          <WrapperInput >
+            <span className="bi bi-person-fill"></span>
+            <input    
+              type="text"
+              name="name"
+              placeholder="Nombre..."
+              autoComplete="off"
+              value={ name }
+              onChange={ handleInputChange }
+              required
+            />
+          </WrapperInput>
 
-        <div className="form-group">
-          <input    
-            type="text"
-            name="phone"
-            className="form-control"
-            placeholder="Teléfono..."
-            autoComplete="off"
-            value={ phone }
-            onChange={ handleInputChange }
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <input
-            type="text"
-            name="email"
-            className="form-control"
-            placeholder="E-mail..."
-            autoComplete="off"
-            value={ email }
-            onChange={ handleInputChange }
-            required
-          />
-        </div>
+          <WrapperInput>
+            <span className="bi bi-telephone-fill"></span>
+            <input    
+              type="tel"
+              name="contact"
+              className="form-control"
+              placeholder="Teléfono..."
+              autoComplete="off"
+              value={ contact }
+              onChange={ handleInputChange }
+              required
+            />
+          </WrapperInput>
 
-        <div className="form-group">
-        <label>Fecha:</label>
-          <input
-            type="text"
-            defaultValue={ getOrderDate() }
-            disabled
-          />
-        </div>
+          <WrapperInput>
+            <input
+              type="email"
+              name="email"
+              placeholder="E-mail..."
+              autoComplete="off"
+              value={ email }
+              onChange={ handleInputChange }
+              required
+            />
+            <span className="bi bi-envelope-fill"></span>
+          </WrapperInput>
 
-        <div className="form-group">
-          <label>Precio: $ </label>
-          <input
-            type="text"
-            defaultValue={ totalCart }
-            disabled
-          />
-        </div>
+          <WrapperInput>
+            <input
+              type="text"
+              defaultValue={ getOrderDate() }
+              disabled
+            />
+          </WrapperInput>
 
-      <button className="btn btn-primary" type="submit">
-        COMPRAR
-      </button>
-      </form>
-    </div>
+          <WrapperInput>
+            <input
+              type="text"
+              defaultValue={ totalCart } 
+              disabled
+            />
+          </WrapperInput>
+
+          <button className="btn" type="submit">
+            Comprar
+          </button>
+        </form>
+      </FormContainer>
+    </StyledCheckout>
   )
 }
+
+
+

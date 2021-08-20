@@ -2,25 +2,22 @@ import React from 'react';
 import { Loader } from '../../Loader/Loader';
 import { Item } from '../Item/Item';
 
-export const ItemList = ({ toys, loader }) => {
-    
+export const ItemList = ({ toys }) => {
+  
   return (
-    <>
-      {loader === 'Cargando' 
-      ? <Loader />
-      : (
-      <div className="container-fluid d-flex justify-content-center" >
-        <div className="row col-md-8">
-          {toys.map((item) => {
-            return (
-              <div className="col mb-4" key={ item.id }>
-                <Item { ...item } />
-              </div>
-            )
-          })}
-        </div>
+    <div className="container">
+      <div className="row">
+        {toys.length === 0 
+          ? ( <Loader /> )
+          : (
+            toys.map((item) => (
+              <Item { ...item } key={ item.id} />
+            ))
+        )}
       </div>
-      )}
-    </>
+    </div>
   )
 }
+
+
+

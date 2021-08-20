@@ -1,5 +1,5 @@
-import React from 'react'
-import './ItemCount.css'
+import React from 'react';
+import styled from 'styled-components';
 
 export const ItemCount = ({ initial, counter, setCounter, stock }) => {
 
@@ -7,12 +7,68 @@ export const ItemCount = ({ initial, counter, setCounter, stock }) => {
   const handleIncrement = () => { counter < stock && setCounter(counter + 1) }
 
   return (
-    <div className="buttonGroup">
-      <button className="btn btn-dark btn-circle functionButton" onClick={ handleDecrement } disabled={ counter === initial }> - </button>
-      <h3 className="counter"> { counter } </h3>
-      <button className="btn btn-dark btn-circle functionButton" onClick={ handleIncrement } disabled={ counter === stock }> + </button>
+    <>
+      <ButtonsCounter>
+        <div className="buttonGroup col-md-5">
+          <button className="btn" onClick={ handleDecrement } disabled={ counter === initial }>-</button>
+          <h3 className="counter"> { counter } </h3>
+          <button className="btn" onClick={ handleIncrement } disabled={ counter === stock }>+</button>
+        </div>
+      </ButtonsCounter>
     <hr />
-    </div>
+    </>
   )
 }
 
+  
+const ButtonsCounter = styled.div`
+  align-items: center;
+  background: #ecf0f3;
+      box-shadow: -3px -3px 7px #ffffff,
+                  3px 3px 5px #ceced1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 15px 0 15px 0;
+  padding: 30px;
+  position: relative;
+
+  .buttonGroup {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-content: center;
+  }
+  .counter {
+    margin-top: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    color: #817094;
+  }
+
+  button{
+    background: #ecf0f3;
+    box-shadow: -3px -3px 7px #ffffff,
+                3px 3px 5px #ceced1;
+    position: relative;
+    margin: 0 5px;
+    display: inline-flex;
+    text-decoration: none;
+    border-radius: 50%;
+    color: #817094;
+  }
+
+  button:hover::before{
+    content: '';
+    border-radius: 50%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: absolute;
+    box-shadow: inset -3px -3px 7px #ffffff,
+                inset 3px 3px 5px #ceced1;
+  }
+`;

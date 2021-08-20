@@ -7,8 +7,10 @@ import { ItemDetail } from '../ItemDetail/ItemDetail';
 export const ItemDetailContainer = () => {
   const { id } = useParams();
   const [selectedItem, setSelectedItem] = useState([]);
-  const [promiseStatus, setPromiseStatus] = useState(null)
+  const [promiseStatus] = useState(null)
 
+  // Al igual que ItemListContainer, uso una "Immediately-invoked function expressions"
+  // ahorrando lineas con el .then y usando async/await 
   useEffect(() => {
     (async() => {
       const resolve = await database.doc(id).get();
@@ -16,15 +18,14 @@ export const ItemDetailContainer = () => {
     })()
   }, [id]);
 
-  console.log(setPromiseStatus)
 
   if (selectedItem.length < 1) {
     return <Loader />
   } else {
     return (
-    <div>
-      <ItemDetail loader={ promiseStatus } selectedItem={ selectedItem }/>
-    </div>
-  )
+      <div>
+        <ItemDetail loader={ promiseStatus } selectedItem={ selectedItem }/>
+      </div>
+    )
   }
 }
