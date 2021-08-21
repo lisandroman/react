@@ -1,7 +1,7 @@
-![wooden-toys](https://user-images.githubusercontent.com/78130980/126024771-6205a7b6-cbe2-4747-899d-67a92fcd4af0.gif)
-
 # WOODEN TOYS 
 We sold wooden toys for babies and toddlers (0 up to 3 years old)
+
+![woodenToys](https://user-images.githubusercontent.com/78130980/130324428-f1c09301-7e44-42a0-af29-2c6b09a876cd.gif)
 
 ## Features: 
 - Home: with the entire collection of items
@@ -45,6 +45,7 @@ If you want to run it locally:
 ### Extras:
 - Persistent Cart in LocalStorage
 - Stock Check/Control
+- Responsive Design
 - Styled Components in Css Styles
 - Layout designed in Figma (buttons, colors, composition)
 
