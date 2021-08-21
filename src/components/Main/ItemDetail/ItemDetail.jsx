@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useCartContext } from '../../context/CartContext';
 import { Loader } from '../../Loader/Loader';
 import { ItemCount } from '../ItemCount/ItemCount';
-import styled from 'styled-components';
+import { Buttons, Wrapper } from './ItemDetailStyles';
 
 export const ItemDetail = ({ selectedItem, loader }) => {
   const { cart, addToCart, removeFromCart, checkStock } = useCartContext();
@@ -39,20 +39,19 @@ export const ItemDetail = ({ selectedItem, loader }) => {
     handleToCart();
   };
 
-  //Botón regresa hacia atrás
+  //Botón return
   let history = useHistory();
   const Return = () => { history.goBack() }
 
-  // En el return con un ternario pongo el Loader y luego el desarrollo de ItemList
   return (
     <>
-      {loader === "Cargando..." ? (
-        <Loader />
-      ) : (
+      {selectedItem.length <= 0 
+      ? ( <Loader /> ) 
+      : (
         selectedItem && (
           <div className="container">
             <div className="row mt-5">
-              <Wrapper className="col-4">
+              <Wrapper className="col-sm-4 col-10">
                 <img
                   src={ selectedItem.pictureUrl }
                   alt={ selectedItem.title }
@@ -60,7 +59,7 @@ export const ItemDetail = ({ selectedItem, loader }) => {
                 />
               </Wrapper>
 
-              <div className="col-4">
+              <div className="col-sm-4 col-12 text-center">
                 <h3>{ selectedItem.title }</h3>
                 <p> { selectedItem.description }</p>
                 {stock > 0 ? (
@@ -76,22 +75,22 @@ export const ItemDetail = ({ selectedItem, loader }) => {
                     {!added ? (
                       <>
                         <ItemCount initial={ 1 } stock={ selectedItem.stock } counter={ counter } setCounter={ setCounter } />
-                        <Buttons lila blanco corto>
-                          <button className="btn mt-2" onClick={ handleButtonAddtoCart } > Agregar al Carrito </button>
+                        <Buttons bgLila textWhite smSize>
+                          <button className="btn mt-2 mr-2" onClick={ handleButtonAddtoCart } > Agregar al Carrito </button>
                         </Buttons>
-                        <Buttons grey corto>
+                        <Buttons bgGrey smSize>
                           <button className="btn mt-2 ml-2" onClick={ Return }>Volver</button>
                         </Buttons>
                       </>
                     ) : (
                       <>
-                        <Buttons lila blanco corto>
+                        <Buttons bgLila textWhite smSize>
                           <Link to="/cart" onClick={ handleAdd } className="clearButtonUnderline">
                             <button className="btn mt-3" onClick={ handleAdd } >Terminar Compra</button>
                           </Link>
                         </Buttons>
                         
-                        <Buttons rosa blanco corto>
+                        <Buttons bgPink textWhite smSize>
                           <button className="btn mt-3 ml-2" onClick={ handleModifyCounter }>Modificar</button>
                         </Buttons>
                         <hr />
@@ -108,12 +107,12 @@ export const ItemDetail = ({ selectedItem, loader }) => {
                 ) : (
                   <>
                     <div className="alert alert-info" role="alert"> Sin Stock! </div>
-                      <Buttons rosa blanco corto>
+                      <Buttons bgPink textWhite smSize>
                         <Link to="/">
                           <button className="button btn"> Ir a Home </button>
                         </Link>
                       </Buttons>
-                      <Buttons lila blanco corto>
+                      <Buttons bgLila textWhite smSize>
                         <Link to="/cart">
                           <button className="btn ml-2"> Ir al Carrito </button>
                         </Link>
@@ -130,67 +129,4 @@ export const ItemDetail = ({ selectedItem, loader }) => {
 };
 
 
-const Wrapper = styled.div`
-  background: #ecf0f3;
-  box-shadow: -3px -3px 7px #ffffff,
-              3px 3px 5px #ceced1;
-  width: 350px;
-  padding: 30px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-
-    img{
-      border-radius: 10px;
-      border: none;
-    }
-`;
-
-
-const Buttons = styled.div `
-  width: 10.5rem;
-  justify-content: space-between; 
-  border: none;
-  display: ${ props => props.corto ? "inline-block" : "inline"};
-
-  .clearButtonUnderline {
-    text-decoration: none;
-  }
-    
-  button{
-    background: #ecf0f3;
-    box-shadow: -3px -3px 7px #ffffff,
-                3px 3px 5px #ceced1;
-    border: none;
-    border-radius: 5px;
-    background-color: ${ props => props.lila ? "#e2e6f7" : props.rosa ?  "#fadafa" : props.grey ? "#855b8d" : "#aca9fa" };
-    color: ${ props => props.blanco ? "#817094" : "#fff" };
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: 400;
-    outline: none;
-    padding: 12px 6px;
-    position: relative;
-    width: 100%;
-    z-index: 4;
-  }
-
-  button:hover:before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    border-radius: 50%;
-    background: #ecf0f3;
-    box-shadow: inset -3px -3px 7px #ffffff,
-                inset 3px 3px 5px #ceced1;
-    z-index: -1;
-    border-radius: 5px;
-  }     
-`;
 

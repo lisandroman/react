@@ -70,7 +70,7 @@ export const Checkout = ({ sendOrder }) => {
   };
   
   return (
-    <StyledCheckout>
+    <StyledCheckout className="mt-4">
       <FormContainer>
         <h4>Ingresa tus datos:</h4>
         <form onSubmit={ handleSubmit }>

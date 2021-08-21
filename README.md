@@ -46,9 +46,10 @@ If you want to run it locally:
 - Persistent Cart in LocalStorage
 - Stock Check/Control
 - Styled Components in Css Styles
+- Layout designed in Figma (buttons, colors, composition)
 
 ----------------------------------------
 
-Para mas informacion:
+More info:
 https://reactjs.org/
 

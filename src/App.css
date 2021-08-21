@@ -2,18 +2,13 @@ body{
   background: #ecf0f3;
 }
 
-.title {
-  color: #444444;
-  margin-top: 2rem;
-  text-align: center;
-  width: 100%;
-}
-
 .navbar-dark .navbar-nav .nav-link {
   color: #fadafa;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 400;
 }
 .navbar-dark .navbar-nav .nav-link:hover {
   color: #d7f3fe;
 }
+
+

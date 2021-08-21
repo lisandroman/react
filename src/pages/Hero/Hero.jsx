@@ -11,10 +11,7 @@ export const Hero = () => {
           <p>Para la primera infancia</p>
         </section>
       </div>
-      <div className="left">
-        
-      </div>
-
+      <div className="left ml-4"> </div>
     </StyledHeroWrapper>
   )
 }

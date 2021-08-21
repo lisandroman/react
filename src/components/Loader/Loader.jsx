@@ -7,7 +7,7 @@ export const Loader = () => {
         <div className="spinner-border text-danger" role="status">
           <span className="sr-only">Loading...</span>
         </div>
-          <h3 className="ml-2 mt-1">Cargando contenido...</h3>
+          <h3 className="ml-3 text-center">Cargando contenido...</h3>
       </div>
     </div>
   )
